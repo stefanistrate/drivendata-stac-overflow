@@ -1,4 +1,4 @@
-"""File utilities for Tensorflow."""
+"""File utilities."""
 
 import tensorflow as tf
 

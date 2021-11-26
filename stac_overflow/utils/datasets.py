@@ -1,4 +1,4 @@
-"""Datasets utilities for Tensorflow."""
+"""Datasets utilities."""
 
 from __future__ import annotations
 

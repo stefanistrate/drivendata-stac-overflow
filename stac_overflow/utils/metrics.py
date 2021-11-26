@@ -12,8 +12,6 @@ class MaskedIOU(tf.keras.metrics.Metric):
                                             initializer="zeros")
         self.union = self.add_weight(name="union", initializer="zeros")
 
-    # TODO(stefanistrate): Take `sample_weight` into account if moving this
-    # metric outside the current project.
     def update_state(self, y_true, y_pred, sample_weight=None):
         del sample_weight  # Unused.
 

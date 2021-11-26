@@ -21,7 +21,7 @@ python -m pretty_errors -s -p
 ## Data splitting for train/validation
 
 ```bash
-DATASTORE="$HOME/datastore/stac_overflow"
+DATASTORE="$HOME/datastore/stac-overflow"
 
 VALIDATION=("_" "awc,ayt,hxu,tnp" "ayt,hxu,pxs,qus" "coz,hxu,jja,tht" "coz,kuo,tht,wvy" "hbe,hxu,kuo,qus")
 
@@ -46,7 +46,7 @@ done
 ## Local training with k-fold cross-validation
 
 ```bash
-DATASTORE="$HOME/datastore/stac_overflow"
+DATASTORE="$HOME/datastore/stac-overflow"
 
 VALIDATION=("awc,ayt,hxu,tnp" "ayt,hxu,pxs,qus" "coz,hxu,jja,tht" "coz,kuo,tht,wvy" "hbe,hxu,kuo,qus")
 
