@@ -1,16 +1,15 @@
-# [STAC Overflow: map floodwater from radar imagery](https://www.drivendata.org/competitions/81/detect-flood-water/page/385/)
+# STAC Overflow: Map Floodwater from Radar Imagery
 
 [![Python build](https://github.com/stefanistrate/drivendata-stac-overflow/actions/workflows/python-build.yml/badge.svg)](https://github.com/stefanistrate/drivendata-stac-overflow/actions/workflows/python-build.yml)
 
-Code for the STAC Overflow competition on DrivenData.
+Code for the
+[STAC Overflow competition](https://www.drivendata.org/competitions/81/detect-flood-water/page/385/)
+on DrivenData. Originally
+[ranked 12th](https://www.drivendata.org/competitions/81/detect-flood-water/leaderboard/)
+with a single-model solution, but then developed even further by implementing an
+ensemble model.
 
-## Full production installation
-
-```bash
-pip install -e .
-```
-
-## Full development installation
+## Local installation for development
 
 ```bash
 pip install -e .[dev]
@@ -63,25 +62,23 @@ python stac_overflow/train_segmentation_model.py \
   --backbone="seresnet152" \
   --num_replicas=1 \
   --batch_size_per_replica=4 \
-  --train_steps_per_epoch=10 \
+  --train_steps_per_epoch=5 \
   --num_epochs=5 \
   --data_augmentation \
-  --wandb_project=stac_overflow \
+  --wandb_project=stac-overflow \
   --wandb_group=local \
   --wandb_mode=online
 
 done
 ```
 
-## Grid.ai GPU training with k-fold cross-validation
+## [Grid.ai](https://www.grid.ai/) training with k-fold cross-validation
 
 Check machine specs and hourly rates
 [here](https://docs.grid.ai/platform/billing-rates#individual-tier-hourly-rates).
 
-TODO(stefanistrate): Update boolean flags when
-[this Grid.ai bug](https://github.com/gridai/gridai/issues/134) is fixed.
-
-### On a single GPU
+TODO(stefanistrate): Remove dummy `true` values from the boolean flags below
+after [this Grid.ai bug](https://github.com/gridai/gridai/issues/134) is fixed.
 
 ```bash
 VALIDATION=("awc,ayt,hxu,tnp" "ayt,hxu,pxs,qus" "coz,hxu,jja,tht" "coz,kuo,tht,wvy" "hbe,hxu,kuo,qus")
@@ -94,7 +91,7 @@ grid run \
   --gpus=1 \
   --dockerfile=stac_overflow/Dockerfile \
   stac_overflow/train_segmentation_model.py \
-  --root_tfrecords="grid:stac_overflow_tfrecords:10" \
+  --root_tfrecords="grid:stac-overflow:1" \
   --train_tfrecords="$VAL/train-*.tfrecords" \
   --validation_tfrecords="$VAL/validation-*.tfrecords" \
   --tfrecords_geo_channel_keys="vv,vh,nasadem,jrc_extent:255:0,jrc_occurrence:255:0,jrc_recurrence:255:0,jrc_seasonality:255:0,jrc_transitions:255:0" \
@@ -112,7 +109,7 @@ grid run \
   --noprogress_bar=true \
   --redirect_logs=true \
   --wandb_api_key="$WANDB_API_KEY" \
-  --wandb_project=stac_overflow \
+  --wandb_project=stac-overflow \
   --wandb_group=unet_pc_rewrite_255s \
   --wandb_mode=online
 
