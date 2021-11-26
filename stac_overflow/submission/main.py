@@ -1,7 +1,7 @@
-"""Inference for the STAC Overflow task.
+"""Inference script for submissions.
 
-See competition at:
-https://www.drivendata.org/competitions/81/detect-flood-water/page/385/
+See the code submission format at:
+https://www.drivendata.org/competitions/81/detect-flood-water/page/389/
 
 This script will average predictions from multiple models, but we have to pay
 attention to providing the right inputs (i.e. the correct bands with the

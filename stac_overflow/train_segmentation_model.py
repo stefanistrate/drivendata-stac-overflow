@@ -18,6 +18,7 @@ from datetime import datetime
 from pathlib import Path
 from pathlib import PurePath
 
+from stac_overflow.submission.inputs import parse_channels_and_rewrites
 from stac_overflow.utils.datasets import tfrecords_as_geospatial_dataset
 from stac_overflow.utils.fileutils import load_local_or_remote_h5_model
 from stac_overflow.utils.logging import print_model_summary
@@ -104,24 +105,6 @@ flags.DEFINE_enum("wandb_mode", "disabled", ["online", "offline", "disabled"],
                   "Running mode for W&B logging.")
 
 FLAGS = flags.FLAGS
-
-
-def parse_channels_and_rewrites(
-        channel_specs: list[str]
-) -> tuple[list[str], dict[str, tuple[int, int]]]:
-    keys = []
-    rewrite_map = {}
-
-    for spec in channel_specs:
-        parts = spec.split(":")
-        if not parts:
-            continue
-        keys.append(parts[0])
-        if len(parts) < 3:
-            continue
-        rewrite_map[parts[0]] = int(parts[1]), int(parts[2])
-
-    return keys, rewrite_map
 
 
 def prepare_augmentations():
