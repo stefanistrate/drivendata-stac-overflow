@@ -5,8 +5,7 @@ name: Python build
 
 on:
   pull_request:
-  schedule:
-    - cron: "0 0 * * 1"
+  push:
   workflow_dispatch:
 
 jobs:
