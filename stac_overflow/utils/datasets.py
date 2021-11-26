@@ -85,9 +85,10 @@ def tfrecords_as_geospatial_dataset(
             img = np.stack(img, axis=-1)
             return img
 
-        img = tf.numpy_function(func=_build_image_from_channels,
-                                inp=[example[key] for key in tfr_channel_keys],
-                                Tout=tf.float32)
+        img = tf.numpy_function(
+            func=_build_image_from_channels,
+            inp=[example[key] for key in tfr_channel_keys],  # type: ignore
+            Tout=tf.float32)
 
         def _read_label(data):
             with MemoryFile(data) as memfile:
