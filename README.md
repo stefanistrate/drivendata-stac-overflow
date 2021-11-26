@@ -89,7 +89,7 @@ grid run \
   --instance_type=g4dn.xlarge \
   --cpus=3 \
   --gpus=1 \
-  --dockerfile=stac_overflow/Dockerfile \
+  --dockerfile=Dockerfile \
   stac_overflow/train_segmentation_model.py \
   --root_tfrecords="grid:stac-overflow:1" \
   --train_tfrecords="$VAL/train-*.tfrecords" \
