@@ -15,7 +15,7 @@ an ensemble model.
 
 - [data exploration notebook](stac_overflow/notebooks/data-exploration.ipynb)
 - [data augmentation notebook](stac_overflow/notebooks/data-augmentation.ipynb)
-- Weights & Biases report:
+- Weights & Biases report on k-fold cross-validation:
 
 ![Weights & Biases report](https://user-images.githubusercontent.com/3457859/143680949-ea3ba031-4770-4113-a61d-ebe98625917f.png)
 
