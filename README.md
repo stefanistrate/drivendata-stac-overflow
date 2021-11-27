@@ -7,9 +7,9 @@ Code for the
 on DrivenData.
 
 Originally
-[ranked 12th](https://www.drivendata.org/competitions/81/detect-flood-water/leaderboard/)
-with a single-model solution, but then developed it even further by implementing
-an ensemble model.
+[I ranked 12th](https://www.drivendata.org/competitions/81/detect-flood-water/leaderboard/)
+with a single-model solution, but later I worked on it even further and
+implemented an ensemble model.
 
 ## Artifacts
 
