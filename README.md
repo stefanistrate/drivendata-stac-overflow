@@ -8,8 +8,8 @@ on DrivenData.
 
 Originally
 [ranked 12th](https://www.drivendata.org/competitions/81/detect-flood-water/leaderboard/)
-with a single-model solution, but then developed even further by implementing an
-ensemble model.
+with a single-model solution, but then developed it even further by implementing
+an ensemble model.
 
 ## Artifacts
 
