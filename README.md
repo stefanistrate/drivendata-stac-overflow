@@ -4,10 +4,14 @@
 
 Code for the
 [STAC Overflow competition](https://www.drivendata.org/competitions/81/detect-flood-water/page/385/)
-on DrivenData. Originally
+on DrivenData.
+
+Originally
 [ranked 12th](https://www.drivendata.org/competitions/81/detect-flood-water/leaderboard/)
 with a single-model solution, but then developed even further by implementing an
 ensemble model.
+
+<img width="1083" alt="wandb-report" src="https://user-images.githubusercontent.com/3457859/143680949-ea3ba031-4770-4113-a61d-ebe98625917f.png">
 
 ## Local installation for development
 
@@ -115,5 +119,3 @@ grid run \
 
 done
 ```
-
-<iframe src="https://wandb.ai/stefanistrate/stac-overflow/reports/STAC-Overflow--VmlldzoxMjcyNjUz" style="border:none;height:1024px;width:100%">
