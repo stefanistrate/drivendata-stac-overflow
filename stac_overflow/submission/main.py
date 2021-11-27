@@ -1,6 +1,6 @@
 """Inference script for submissions.
 
-See the code submission format at:
+See the expected code submission format at:
 https://www.drivendata.org/competitions/81/detect-flood-water/page/389/
 
 This script will average predictions from multiple models, but we have to pay
@@ -22,6 +22,9 @@ from tensorflow.python.ops.numpy_ops import np_config
 from tifffile import imwrite
 from tqdm import tqdm
 
+# A relative import needed when `main.py` becomes top-level.
+from inputs import parse_channels_and_rewrites
+
 ROOT_DIR = Path("/codeexecution")
 SUBMISSION_DIR = ROOT_DIR / "submission"
 MODELS_DIR = ROOT_DIR / "models"
@@ -29,6 +32,14 @@ DATA_DIR = ROOT_DIR / "data"
 INPUT_DIR = DATA_DIR / "test_features"
 JRC_OCCURRENCE_DIR = DATA_DIR / "jrc_occurrence"
 NASADEM_DIR = DATA_DIR / "nasadem"
+EXTRA_CHANNELS = [
+    "nasadem",
+    "jrc_extent:255:0",
+    "jrc_occurrence:255:0",
+    "jrc_recurrence:255:0",
+    "jrc_seasonality:255:0",
+    "jrc_transitions:255:0",
+]
 
 
 def spill_water(water: np.ndarray,
@@ -70,16 +81,29 @@ def list_chip_ids() -> list[str]:
     return list(sorted(chip_ids))
 
 
-def make_prediction(models: list[tf.keras.Model], chip_id: str) -> np.ndarray:
+def make_prediction(
+        models: list[tf.keras.Model], chip_id: str, extra_channels: list[str],
+        extra_channels_rewrite_map: dict[str, tuple[int, int]]) -> np.ndarray:
     """Makes prediction for a given chip."""
 
+    inputs = []
     vv_path = INPUT_DIR / f"{chip_id}_vv.tif"
     with rasterio.open(vv_path) as f:
         vv = f.read(1)
+        inputs.append(vv)
     vh_path = INPUT_DIR / f"{chip_id}_vh.tif"
     with rasterio.open(vh_path) as f:
         vh = f.read(1)
-    raster = np.stack([vv, vh], axis=-1)
+        inputs.append(vh)
+    for extra_channel in extra_channels:
+        ch_path = DATA_DIR / extra_channel / f"{chip_id}.tif"
+        with rasterio.open(ch_path) as f:
+            ch = f.read(1)
+            if extra_channel in extra_channels_rewrite_map:
+                v_from, v_to = extra_channels_rewrite_map[extra_channel]
+                ch[ch == v_from] = v_to
+            inputs.append(ch)
+    raster = np.stack(inputs, axis=-1)
     raster = np.expand_dims(raster, axis=0)
 
     predictions = [model(raster, training=False) for model in models]
@@ -123,8 +147,12 @@ def main(argv):
     logging.info("Found %d test chip ids.", len(chip_ids))
 
     logging.info("Generating predictions.")
+    extra_channels, extra_channels_rewrite_map = parse_channels_and_rewrites(
+        EXTRA_CHANNELS)
     for chip_id in tqdm(chip_ids, miniters=25):
-        output_data = make_prediction(models, chip_id).astype(np.uint8)
+        output_data = make_prediction(models, chip_id, extra_channels,
+                                      extra_channels_rewrite_map).astype(
+                                          np.uint8)
         output_data = postprocess_prediction(output_data, chip_id)
         output_path = SUBMISSION_DIR / f"{chip_id}.tif"
         imwrite(output_path, output_data, dtype=np.uint8)
